@@ -28,7 +28,9 @@ export default async function getVariantMedia(variant, context) {
       const { metadata } = media;
       const { priority, variantId: variantIdLocal } = metadata || {};
 
-      return {
+       // Function returns the value as shown below
+      const returnFunc = () => {
+        return {
         _id: media._id,
         priority,
         variantId: variantIdLocal,
@@ -40,8 +42,15 @@ export default async function getVariantMedia(variant, context) {
           thumbnail: `${media.url({ store: "thumbnail" })}`
         }
       };
+      }
+
+      // checks if at least a single url, present or not. If yes, returns data else ignores.
+      if (media.url({store: "large"}) || media.url({store: "small"}) || media.url({store: "medium"}) || media.url({store: "image"}) || media.url({store: "thumbnail"})) return returnFunc();
     })
     .sort((mediaA, mediaB) => mediaA.priority - mediaB.priority);
 
-  return variantMedia;
+  // Prevent null value being returned
+  return variantMedia.filter(element => {
+    return element != null;
+  });
 }

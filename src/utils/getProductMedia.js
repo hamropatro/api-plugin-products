@@ -36,7 +36,9 @@ export default async function getProductMedia(product, { shouldIncludeVariantMed
       const { metadata } = media;
       const { priority, productId: prodId, variantId } = metadata || {};
 
-      return {
+      // Function returns the value as shown below
+      const returnFunc = () => {
+        return {
         _id: media._id,
         priority,
         productId: prodId,
@@ -49,8 +51,16 @@ export default async function getProductMedia(product, { shouldIncludeVariantMed
           thumbnail: `${media.url({ store: "thumbnail" })}`
         }
       };
+      }
+
+      // checks if at least a single url, present or not. If yes, returns data else ignores.
+      if (media.url({store: "large"}) || media.url({store: "small"}) || media.url({store: "medium"}) || media.url({store: "image"}) || media.url({store: "thumbnail"})) return returnFunc();
+
     })
     .sort((mediaA, mediaB) => mediaA.priority - mediaB.priority);
 
-  return productMedia;
+  // Prevent null value being returned
+  return productMedia.filter(element => {
+    return element != null;
+  });
 }
