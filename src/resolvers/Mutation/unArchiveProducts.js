@@ -1,6 +1,7 @@
-import {decodeProductOpaqueId, decodeShopOpaqueId} from "../../xforms/id.js";
+import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
+ * @author Sushant Babu Luitel
  *
  * @method UnArchiveProducts
  * @summary Takes an array of product IDs and unArchives products
@@ -13,23 +14,24 @@ import {decodeProductOpaqueId, decodeShopOpaqueId} from "../../xforms/id.js";
  * @return {Array} Array of unArchived Products
  */
 
-export default async function UnArchiveProducts(_, {input}, context) {
-  const {
-    clientMutationId,
-    productIds,
-    shopId
-  } = input;
+export default async function UnArchiveProducts(_, { input }, context) {
+  const { clientMutationId, productIds, shopId } = input;
 
-  const decodedProductIds = productIds.map((productId) => decodeProductOpaqueId(productId));
+  const decodedProductIds = productIds.map((productId) =>
+    decodeProductOpaqueId(productId)
+  );
   const decodeShopId = decodeShopOpaqueId(shopId);
 
-  const unArchivedProductList = await context.mutations.unArchiveProducts(context, {
-    productIds: decodedProductIds,
-    shopId: decodeShopId
-  });
+  const unArchivedProductList = await context.mutations.unArchiveProducts(
+    context,
+    {
+      productIds: decodedProductIds,
+      shopId: decodeShopId,
+    }
+  );
 
   return {
     clientMutationId,
-    products: unArchivedProductList
+    products: unArchivedProductList,
   };
 }
