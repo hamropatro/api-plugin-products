@@ -72,7 +72,8 @@ export default async function archiveProducts(context, input) {
       },
       {
         $set: {
-          isDeleted: true
+          isDeleted: true,
+          isVisible: false
         }
       }, {
         returnOriginal: false

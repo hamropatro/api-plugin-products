@@ -15,10 +15,10 @@ export default async function getVariantMedia(variant, context) {
     {
       "metadata.shopId": shopId,
       "metadata.variantId": variantId,
-      "metadata.workflow": { $nin: ["archived", "unpublished"] }
+      "metadata.workflow": { $nin: ["archived", "unpublished"] },
     },
     {
-      sort: { "metadata.priority": 1, "uploadedAt": 1 }
+      sort: { "metadata.priority": 1, uploadedAt: 1 },
     }
   );
 
@@ -28,20 +28,30 @@ export default async function getVariantMedia(variant, context) {
       const { metadata } = media;
       const { priority, variantId: variantIdLocal } = metadata || {};
 
-      return {
-        _id: media._id,
-        priority,
-        variantId: variantIdLocal,
-        URLs: {
-          large: `${media.url({ store: "large" })}`,
-          medium: `${media.url({ store: "medium" })}`,
-          original: `${media.url({ store: "image" })}`,
-          small: `${media.url({ store: "small" })}`,
-          thumbnail: `${media.url({ store: "thumbnail" })}`
-        }
-      };
+      // checks if at least a single url, present or not. If yes, returns data else ignores.
+      if (
+        !!media.url({ store: "large" }) ||
+        !!media.url({ store: "small" }) ||
+        !!media.url({ store: "medium" }) ||
+        !!media.url({ store: "image" }) ||
+        !!media.url({ store: "thumbnail" })
+      ) {
+        return {
+          _id: media._id,
+          priority,
+          variantId: variantIdLocal,
+          URLs: {
+            large: `${media.url({ store: "large" })}`,
+            medium: `${media.url({ store: "medium" })}`,
+            original: `${media.url({ store: "image" })}`,
+            small: `${media.url({ store: "small" })}`,
+            thumbnail: `${media.url({ store: "thumbnail" })}`,
+          },
+        };
+      }
     })
     .sort((mediaA, mediaB) => mediaA.priority - mediaB.priority);
 
-  return variantMedia;
+  // Prevent null value being returned
+  return variantMedia.filter((element) => element !== null);
 }

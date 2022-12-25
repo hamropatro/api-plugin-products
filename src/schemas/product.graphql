@@ -195,6 +195,15 @@ type ArchiveProductsPayload  {
   products: [Product]!
 }
 
+"Response payload of `unArchiveProducts` mutation"
+type UnArchiveProductsPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "Array of newly Unarchived Products"
+  products: [Product]!
+}
+
 "Response payload of `archiveProductVariants` mutation"
 type ArchiveProductVariantsPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
@@ -307,6 +316,15 @@ input ArchiveProductsInput  {
   productIds: [ID]!
 
   "ID of shop that owns all products you are archiving"
+  shopId: ID!
+}
+
+"Input for the `unArchiveProducts` mutation"
+input UnArchiveProductsInput {
+  "Array of IDs of products to unArchive, make sure all productIds belong to same Shop"
+  productIds: [ID]!
+
+  "ID of shop that owns all products you are unArchiving"
   shopId: ID!
 }
 
@@ -551,11 +569,18 @@ extend type Mutation {
     input: ArchiveProductsInput!
   ): ArchiveProductsPayload!
 
+   "UnArchive Products"
+  unArchiveProducts(
+     "Mutation input"
+  input: UnArchiveProductsInput!
+   ): UnArchiveProductsPayload!
+
   "Archive product variants"
   archiveProductVariants(
     "Mutation input"
     input: ArchiveProductVariantsInput!
   ): ArchiveProductVariantsPayload!
+
 
   "Update the isVisible property of an array of products"
   updateProductsVisibility(

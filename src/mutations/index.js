@@ -8,6 +8,7 @@ import removeTagsFromProducts from "./removeTagsFromProducts.js";
 import updateProduct from "./updateProduct.js";
 import updateProductVariant from "./updateProductVariant.js";
 import updateProductsVisibility from "./updateProductsVisibility.js";
+import unArchiveProducts from "./unArchiveProducts.js";
 
 export default {
   addTagsToProducts,
@@ -19,5 +20,6 @@ export default {
   removeTagsFromProducts,
   updateProduct,
   updateProductVariant,
-  updateProductsVisibility
+  updateProductsVisibility,
+  unArchiveProducts
 };
