@@ -61,7 +61,5 @@ export default async function getProductMedia(product, { shouldIncludeVariantMed
     .sort((mediaA, mediaB) => mediaA.priority - mediaB.priority);
 
   // Prevent null value being returned
-  return productMedia.filter(element => {
-    return element !== null;
-  });
+  return productMedia.filter(element => element !== null);
 }

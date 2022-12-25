@@ -53,7 +53,5 @@ export default async function getVariantMedia(variant, context) {
     .sort((mediaA, mediaB) => mediaA.priority - mediaB.priority);
 
   // Prevent null value being returned
-  return variantMedia.filter((element) => {
-    return element !== null;
-  });
+  return variantMedia.filter((element) => element !== null);
 }

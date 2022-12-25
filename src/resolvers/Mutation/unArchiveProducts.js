@@ -20,13 +20,12 @@ export default async function UnArchiveProducts(_, { input }, context) {
   const decodedProductIds = productIds.map((productId) =>
     decodeProductOpaqueId(productId)
   );
-  const decodeShopId = decodeShopOpaqueId(shopId);
 
   const unArchivedProductList = await context.mutations.unArchiveProducts(
     context,
     {
       productIds: decodedProductIds,
-      shopId: decodeShopId,
+      shopId: decodeShopOpaqueId(shopId)
     }
   );
 
